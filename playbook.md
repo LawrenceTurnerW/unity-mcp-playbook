@@ -235,12 +235,16 @@ Step 3-e の小リファクタとは **別物**。Step 3-e が軽い確認なら
 
 ```
 1. このプレイブックを読む
-2. Bash: date +%s > /tmp/game_start
+2. Bash: date +%s > /tmp/autopilot_session_start   # セッション全体（参考用）
 3. EditorPrefs InteractionMode=1 確認（§A1）
 4. EnterPlanMode → Explore 1-3 並列 → Plan agent → ExitPlanMode
-5. TaskCreate でフェーズ分解、Time Budget は §D
-6. フェーズ実装ループ（Step 3 のチェックリスト遵守）
-7. 60-70% 時点で専用リファクタ（§C 下半分 + 重複削減）
-8. 80% 時点で新機能打ち切り判定
-9. 仕上げ + メモリ更新 + 報告
+5. ★ ユーザー承認直後: date +%s > /tmp/autopilot_start   # ★ ここから稼働時間カウント
+6. TaskCreate でフェーズ分解、Time Budget は §D
+7. フェーズ実装ループ（Step 3 のチェックリスト遵守）
+   経過時間ログ: ELAPSED=$(( $(date +%s) - $(cat /tmp/autopilot_start) ))
+8. 自走の 60-70% 時点で専用リファクタ（§C 下半分 + 重複削減）
+9. 自走の 80% 時点で新機能打ち切り判定
+10. 仕上げ + メモリ更新 + 報告
 ```
+
+「自走の X%」は `/tmp/autopilot_start` 起点（計画承認時点）で計算する。ヒアリング・計画にかかった時間は含めない。
