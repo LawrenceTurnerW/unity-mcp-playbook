@@ -18,7 +18,7 @@
 
 ### Step 0. セッション開始（〜2 分）
 
-1. **開始時刻記録**: `date +%s > /tmp/game_start` を Bash で必ず実行
+1. **セッション開始時刻記録（参考用）**: `date +%s > /tmp/autopilot_session_start` を Bash で必ず実行。これはヒアリング・計画も含むセッション全体の参考時刻。**自走時間のカウント基準は計画承認後（Step 1 末尾）に記録する `/tmp/autopilot_start`**
 2. **プロジェクトメモリ読み込み**: `MEMORY.md` 経由でロード済みのはず。`project_*`, `unity-mcp-*` 系を頭に入れる
 3. **環境確認**:
    - Unity Editor の `InteractionMode=NoThrottling` が設定済みか（未設定なら適用、§A1）
@@ -37,9 +37,10 @@
    - 自信があるときでもサニティチェックとして必ず実行
 4. **Plan ファイル書く**: Context / Approach / Critical Files / Time Budget / Risks / Verification を含める
 5. **AskUserQuestion** は本当に詰まったときだけ。ユーザーは「自走で」と依頼している
-6. **ExitPlanMode** で承認得て実装へ
+6. **ExitPlanMode** で承認得る
+7. **★ 承認直後に自走開始時刻を記録**: `date +%s > /tmp/autopilot_start`。**ここから** ユーザーが指定した稼働時間（例: 60 分）をカウントする。以降の §4 / §6 で言う「自走の X%」はすべてこの起点から計算
 
-短時間（〜15 分）の場合は Explore / Plan agent 省略、Plan ファイルは書かず TaskCreate のみで進む。
+短時間（〜15 分）の場合は Explore / Plan agent 省略、Plan ファイルは書かず TaskCreate のみで進む。`/tmp/autopilot_start` の記録は同じく承認直後に行う。
 
 ### Step 2. タスク分解と時間配分（〜2 分）
 
